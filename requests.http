@@ -1,0 +1,18 @@
+### 1. Listar todos os produtos (esperamos uma lista vazia)
+GET http://localhost:8080/api/produtos
+
+
+### 2. Criar um novo produto
+POST http://localhost:8080/api/produtos
+Content-Type: application/json
+
+{
+  "nome": "Brigadeiro Gourmet de Teste",
+  "descricao": "Criado via API para teste",
+  "preco": 4.50,
+  "imagemUrl": "https://example.com/imagem.png"
+}
+
+
+### 3. Listar todos os produtos novamente (agora com um item)
+GET http://localhost:8080/api/produtos
