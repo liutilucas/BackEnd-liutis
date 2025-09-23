@@ -5,9 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutoController {
@@ -15,21 +13,27 @@ public class ProdutoController {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    // Endpoint para LISTAR TODOS os produtos (GET /api/produtos)
     @GetMapping
     public List<Produto> listarTodos() {
         return produtoRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Produto> buscarPorId(@PathVariable Long id) {
+        return produtoRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public Produto criarProduto(@RequestBody Produto produto) {
         produto.setId(null);
-
         return produtoRepository.save(produto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Produto> atualizarProduto(@PathVariable Long id, @RequestBody Produto produtoAtualizado) {
-
         return produtoRepository.findById(id)
                 .map(produtoExistente -> {
                     produtoExistente.setNome(produtoAtualizado.getNome());
@@ -50,4 +54,10 @@ public class ProdutoController {
         produtoRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/login-check")
+    public ResponseEntity<String> loginCheck() {
+        return ResponseEntity.ok("Autenticado com sucesso");
+    }
 }
+
