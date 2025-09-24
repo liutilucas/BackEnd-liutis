@@ -80,12 +80,12 @@
 			</plugin>
 
 			<!-- A ALTERAÇÃO ESTÁ NESTE PLUGIN ABAIXO -->
+			<!-- No seu pom.xml -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>br.com.doceria.liutis.ConnectionTester</mainClass>
-					<layout>JAR</layout>
+					<!-- A secção <mainClass> e <layout> foi REMOVIDA daqui -->
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
