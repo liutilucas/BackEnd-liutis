@@ -49,9 +49,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-
-		<!-- BLOCO DO H2 REMOVIDO DAQUI -->
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -78,14 +75,11 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
-
-			<!-- A ALTERAÇÃO ESTÁ NESTE PLUGIN ABAIXO -->
-			<!-- No seu pom.xml -->
+			<!-- ESTE PLUGIN FOI REVERTIDO PARA A VERSÃO ORIGINAL -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<!-- A secção <mainClass> e <layout> foi REMOVIDA daqui -->
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -94,7 +88,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 
