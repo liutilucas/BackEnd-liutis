@@ -1,11 +1,19 @@
-# Usar uma imagem base oficial do Java 17
-FROM eclipse-temurin:17-jdk-jammy
+FROM maven:3.8.5-openjdk-17 AS build
 
-# Definir o diretório de trabalho dentro da "caixa"
 WORKDIR /app
 
-# Copiar o nosso ficheiro .jar compilado para dentro da "caixa"
-COPY target/liutis-0.0.1-SNAPSHOT.jar app.jar
+COPY pom.xml .
 
-# Comando para executar a aplicação quando a "caixa" ligar
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+
+FROM eclipse-temurin:17-jre-jammy
+
+WORKDIR /app
+
+COPY --from=build /app/target/liutis-0.0.1-SNAPSHOT.jar app.jar
+
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
