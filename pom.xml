@@ -78,10 +78,14 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
+			<!-- A ALTERAÇÃO ESTÁ NESTE PLUGIN ABAIXO -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>br.com.doceria.liutis.ConnectionTester</mainClass>
+					<layout>JAR</layout>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -90,6 +94,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 
