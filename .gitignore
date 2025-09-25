@@ -32,5 +32,3 @@ build/
 ### VS Code ###
 .vscode/
 
-# Ignorar o ficheiro de propriedades locais para evitar problemas de encoding no deploy
-/src/main/resources/application.properties
