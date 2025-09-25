@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -28,32 +29,39 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 1. Ativa a configuração de CORS definida abaixo
+                // 1. Ativa a configuração de CORS que definimos no bean abaixo
                 .cors(Customizer.withDefaults())
+                // Desativa a proteção CSRF, comum para APIs stateless
                 .csrf(csrf -> csrf.disable())
+                // Define as regras de autorização para os endpoints
                 .authorizeHttpRequests(authorize -> authorize
+                        // Permite que qualquer um (permitAll) acesse os produtos via GET
                         .requestMatchers(HttpMethod.GET, "/api/produtos/**").permitAll()
+                        // Exige autenticação para qualquer outra requisição
                         .anyRequest().authenticated()
                 )
+                // Habilita a autenticação básica (usuário e senha)
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
-    // 2. Define as regras de CORS para toda a aplicação
+    // 2. Define as regras de CORS (quem pode acessar nossa API)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Permite que o nosso front-end aceda
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        // Permite todos os métodos que vamos usar
+        // Adicione aqui as URLs do seu front-end.
+        // É crucial ter a do ambiente de desenvolvimento (localhost) e, no futuro, a de produção.
+        configuration.setAllowedOrigins(List.of("http://localhost:5173" /* , "https://seu-frontend.vercel.app" */));
+        // Métodos HTTP que o front-end pode usar
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Permite todos os cabeçalhos (incluindo o de Authorization)
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        // Permite o envio de credenciais
+        // Cabeçalhos que o front-end pode enviar
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        // Permite o envio de credenciais (como cookies ou tokens de autenticação)
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Aplica estas regras a todos os endpoints
+        // Aplica estas regras de CORS para todos os endpoints da nossa API ("/**")
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
